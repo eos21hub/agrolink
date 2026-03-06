@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #08110a;
+    color: #e8f5e8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0c1510;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2da82d33;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2da82d66;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(15, 26, 15, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(45, 168, 45, 0.12);
+  }
+
+  .glass-hover {
+    @apply glass transition-all duration-200;
+  }
+
+  .glass-hover:hover {
+    background: rgba(15, 26, 15, 0.8);
+    border-color: rgba(45, 168, 45, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary {
+    @apply bg-forest-500 hover:bg-forest-400 text-white font-display font-semibold px-5 py-2.5 rounded-lg transition-all duration-200 text-sm tracking-wide;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 20px rgba(45, 168, 45, 0.35);
+  }
+
+  .btn-secondary {
+    @apply glass text-forest-300 hover:text-forest-200 font-display font-medium px-5 py-2.5 rounded-lg transition-all duration-200 text-sm;
+  }
+
+  .input-field {
+    @apply glass text-earth-100 placeholder-earth-700 w-full px-4 py-3 rounded-lg text-sm transition-all duration-200 outline-none;
+  }
+
+  .input-field:focus {
+    border-color: rgba(45, 168, 45, 0.5);
+    box-shadow: 0 0 0 3px rgba(45, 168, 45, 0.1);
+  }
+
+  .label {
+    @apply block text-xs font-display font-semibold text-earth-400 uppercase tracking-widest mb-2;
+  }
+
+  .card {
+    @apply glass rounded-xl p-5;
+  }
+
+  .card-hover {
+    @apply glass-hover rounded-xl p-5 cursor-pointer;
+  }
+
+  .stat-value {
+    @apply font-display font-bold text-3xl text-earth-100;
+  }
+
+  .stat-label {
+    @apply text-xs font-display font-medium text-earth-500 uppercase tracking-widest mt-1;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 text-xs font-mono font-medium px-2 py-0.5 rounded-full;
+  }
+
+  .badge-green {
+    @apply badge bg-forest-900/60 text-forest-300 border border-forest-700/30;
+  }
+
+  .badge-yellow {
+    @apply badge bg-savanna-900/60 text-savanna-300 border border-savanna-700/30;
+  }
+
+  .badge-red {
+    @apply badge bg-red-900/40 text-red-400 border border-red-800/30;
+  }
+
+  .badge-soil {
+    @apply badge bg-soil-900/60 text-soil-300 border border-soil-700/30;
+  }
+
+  .section-title {
+    @apply font-display font-bold text-xl text-earth-100 tracking-tight;
+  }
+
+  .page-title {
+    @apply font-display font-bold text-3xl text-earth-50 tracking-tight;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: linear-gradient(135deg, #86d986 0%, #d4842a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glow-green {
+    box-shadow: 0 0 30px rgba(45, 168, 45, 0.2);
+  }
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+}
+
+/* Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(45, 168, 45, 0.2);
+  border-top-color: #2da82d;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
