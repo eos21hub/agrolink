@@ -102,14 +102,14 @@ export function LoginPage() {
           <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
             <Leaf className="w-4 h-4 text-white" />
           </div>
-          <span className="font-display font-bold text-blue-900">AgroLink AI</span>
+          <span className="font-display font-bold text-indigo-950">AgroLink AI</span>
         </div>
 
         <div className="mb-8">
-          <h1 className="font-display font-bold text-2xl text-blue-900 mb-1">
+          <h1 className="font-display font-bold text-2xl text-indigo-950 mb-1">
             {mode === 'signin' ? 'Welcome back' : 'Create account'}
           </h1>
-          <p className="text-sm text-blue-400">
+          <p className="text-sm text-slate-400">
             {mode === 'signin' ? 'Sign in to your farming dashboard' : 'Join the smart farming network'}
           </p>
         </div>
@@ -123,7 +123,7 @@ export function LoginPage() {
               className={`flex-1 py-2 rounded-lg text-sm font-display font-semibold transition-all duration-200 ${
                 mode === m
                   ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-blue-500 hover:text-blue-700'
+                  : 'text-slate-500 hover:text-indigo-700'
               }`}
             >
               {m === 'signin' ? 'Sign In' : 'Sign Up'}
@@ -164,7 +164,7 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-300 hover:text-blue-600 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-indigo-600 transition-colors"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -195,7 +195,7 @@ export function LoginPage() {
           </button>
         </div>
 
-        <p className="text-center text-xs text-blue-300 mt-6">
+        <p className="text-center text-xs text-slate-300 mt-6">
           By continuing, you agree to AgroLink's terms of service.
         </p>
       </div>

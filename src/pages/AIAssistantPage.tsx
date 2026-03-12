@@ -72,14 +72,14 @@ export function AIAssistantPage() {
     <div className="flex flex-col h-[calc(100vh-120px)] lg:h-[calc(100vh-64px)] max-w-3xl animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-3 mb-4 flex-shrink-0">
-        <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_2px_8px_rgba(37,99,235,0.30)]">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-[0_2px_10px_rgba(79,70,229,0.35)]">
           <Bot className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="font-display font-bold text-xl text-blue-900">AI Farming Assistant</h1>
+          <h1 className="font-display font-bold text-xl text-indigo-950">AI Farming Assistant</h1>
           <div className="flex items-center gap-1.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-blue-400 font-medium">Online — Powered by GPT-4</span>
+            <span className="text-xs text-slate-400 font-medium">Online — Powered by GPT-4</span>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ export function AIAssistantPage() {
               <button
                 key={q}
                 onClick={() => sendMessage(q)}
-                className="text-xs px-3 py-1.5 rounded-full border border-blue-200 text-blue-500 hover:text-blue-700 hover:border-blue-400 hover:bg-blue-50 transition-all font-medium bg-white"
+                className="text-xs px-3 py-1.5 rounded-full border border-blue-200 text-slate-500 hover:text-indigo-700 hover:border-blue-400 hover:bg-blue-50 transition-all font-medium bg-white"
               >
                 {q}
               </button>
@@ -106,25 +106,25 @@ export function AIAssistantPage() {
             className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'} animate-fade-in`}
           >
             <div className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center ${
-              msg.role === 'assistant' ? 'bg-blue-600' : 'bg-blue-100 border border-blue-200'
+              msg.role === 'assistant' ? 'bg-gradient-to-br from-indigo-500 to-blue-600' : 'bg-blue-100 border border-blue-200'
             }`}>
               {msg.role === 'assistant'
                 ? <Sparkles className="w-3.5 h-3.5 text-white" />
-                : <User className="w-3.5 h-3.5 text-blue-500" />
+                : <User className="w-3.5 h-3.5 text-slate-500" />
               }
             </div>
 
             <div className={`max-w-[80%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
               <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 msg.role === 'assistant'
-                  ? 'bg-white border border-blue-100 text-blue-900 shadow-sm'
+                  ? 'bg-white border border-blue-100 text-indigo-950 shadow-sm'
                   : 'bg-blue-600 text-white'
               }`}>
                 {msg.content.split('\n').map((line, i) => (
                   <span key={i}>{line}{i < msg.content.split('\n').length - 1 && <br />}</span>
                 ))}
               </div>
-              <span className="text-xs text-blue-300 mt-1 px-1">
+              <span className="text-xs text-slate-300 mt-1 px-1">
                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>

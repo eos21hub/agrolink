@@ -25,14 +25,14 @@ export function Navbar() {
     <header className="lg:hidden sticky top-0 z-50 border-b border-blue-100 bg-white shadow-[0_2px_8px_rgba(59,130,246,0.07)]">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-[0_2px_8px_rgba(79,70,229,0.35)]">
             <Leaf className="w-4 h-4 text-white" />
           </div>
-          <span className="font-display font-bold text-blue-900">AgroLink AI</span>
+          <span className="font-display font-bold text-indigo-950">AgroLink AI</span>
         </div>
         <button
           onClick={() => setOpen(!open)}
-          className="p-2 rounded-lg text-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all"
+          className="p-2 rounded-lg text-slate-400 hover:text-indigo-700 hover:bg-blue-50 transition-all"
         >
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
@@ -48,8 +48,8 @@ export function Navbar() {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-body font-medium transition-all ${
                   isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-blue-700 hover:bg-blue-50 hover:text-blue-900'
+                    ? 'bg-gradient-to-r from-indigo-500 to-blue-500 text-white shadow-sm'
+                    : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-900'
                 }`
               }
             >
@@ -58,7 +58,7 @@ export function Navbar() {
             </NavLink>
           ))}
           <div className="pt-2 mt-2 border-t border-blue-100">
-            <div className="px-3 py-1.5 text-xs text-blue-400 font-medium">{user?.full_name} · {user?.region}</div>
+            <div className="px-3 py-1.5 text-xs text-slate-400 font-medium">{user?.full_name} · {user?.region}</div>
             <button
               onClick={handleSignOut}
               className="flex items-center gap-2 w-full px-3 py-2 rounded-xl text-sm text-red-500 hover:bg-red-50 transition-all"

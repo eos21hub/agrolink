@@ -33,8 +33,8 @@ export function PredictionCard({ prediction }: { prediction: Prediction }) {
     <div className="card animate-fade-in">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="font-display font-bold text-blue-900 capitalize text-base">{prediction.crop_name}</h3>
-          <p className="text-xs text-blue-400 mt-0.5">
+          <h3 className="font-display font-bold text-indigo-950 capitalize text-base">{prediction.crop_name}</h3>
+          <p className="text-xs text-slate-400 mt-0.5">
             {format(new Date(prediction.created_at), 'MMM d, yyyy · h:mm a')}
           </p>
         </div>
@@ -45,21 +45,21 @@ export function PredictionCard({ prediction }: { prediction: Prediction }) {
         <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
           <div className="flex items-center gap-1.5 mb-1">
             <DollarSign className="w-3.5 h-3.5 text-amber-500" />
-            <span className="text-xs text-blue-500 font-medium">Predicted Price</span>
+            <span className="text-xs text-slate-500 font-medium">Predicted Price</span>
           </div>
-          <div className="font-mono font-bold text-blue-800">GHS {prediction.predicted_price}/kg</div>
+          <div className="font-mono font-bold text-indigo-900">GHS {prediction.predicted_price}/kg</div>
         </div>
         <div className="bg-blue-50 rounded-xl p-3 border border-blue-100">
           <div className="flex items-center gap-1.5 mb-1">
-            <Store className="w-3.5 h-3.5 text-blue-500" />
-            <span className="text-xs text-blue-500 font-medium">Best Market</span>
+            <Store className="w-3.5 h-3.5 text-slate-500" />
+            <span className="text-xs text-slate-500 font-medium">Best Market</span>
           </div>
-          <div className="font-display font-bold text-blue-800 text-sm">{prediction.best_market}</div>
+          <div className="font-display font-bold text-indigo-900 text-sm">{prediction.best_market}</div>
         </div>
       </div>
 
       {prediction.reasoning && (
-        <p className="text-xs text-blue-600 leading-relaxed border-t border-blue-100 pt-3">
+        <p className="text-xs text-indigo-600 leading-relaxed border-t border-blue-100 pt-3">
           {prediction.reasoning}
         </p>
       )}

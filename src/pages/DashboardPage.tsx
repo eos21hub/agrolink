@@ -38,7 +38,7 @@ export function DashboardPage() {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   const STATS = [
-    { label: 'Total Crops',      value: crops.length,                    icon: Wheat,     accent: 'bg-blue-100 text-blue-600' },
+    { label: 'Total Crops',      value: crops.length,                    icon: Wheat,     accent: 'bg-blue-100 text-indigo-600' },
     { label: 'Active Listings',  value: activeCrops,                     icon: TrendingUp, accent: 'bg-emerald-100 text-emerald-600' },
     { label: 'Predictions Run',  value: predictions.length,              icon: BarChart3,  accent: 'bg-amber-100 text-amber-600' },
     { label: 'Avg Demand Score', value: avgDemand ? `${avgDemand}/100` : '—', icon: BarChart3, accent: 'bg-purple-100 text-purple-600' },
@@ -49,9 +49,9 @@ export function DashboardPage() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-blue-400 text-sm font-medium mb-1">{greeting} 👋</p>
+          <p className="text-slate-400 text-sm font-medium mb-1">{greeting} 👋</p>
           <h1 className="page-title">{user?.full_name?.split(' ')[0] || 'Farmer'}</h1>
-          <p className="text-blue-400 text-sm mt-1">{user?.region}, Ghana</p>
+          <p className="text-slate-400 text-sm mt-1">{user?.region}, Ghana</p>
         </div>
         <Link to="/upload-crop" className="btn-primary">
           <Plus className="w-4 h-4" />
@@ -80,7 +80,7 @@ export function DashboardPage() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="section-title">Recent Crops</h2>
-              <Link to="/upload-crop" className="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 font-semibold transition-colors">
+              <Link to="/upload-crop" className="text-xs text-slate-500 hover:text-indigo-700 flex items-center gap-1 font-semibold transition-colors">
                 View all <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -91,7 +91,7 @@ export function DashboardPage() {
             ) : crops.length === 0 ? (
               <div className="card text-center py-8 border-dashed">
                 <Wheat className="w-8 h-8 text-blue-200 mx-auto mb-2" />
-                <p className="text-blue-400 text-sm">No crops uploaded yet</p>
+                <p className="text-slate-400 text-sm">No crops uploaded yet</p>
                 <Link to="/upload-crop" className="btn-primary inline-flex mt-3 text-xs py-2">Upload your first crop</Link>
               </div>
             ) : (
@@ -105,7 +105,7 @@ export function DashboardPage() {
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="section-title">Latest Market Prices</h2>
-              <Link to="/market-prices" className="text-xs text-blue-500 hover:text-blue-700 flex items-center gap-1 font-semibold transition-colors">
+              <Link to="/market-prices" className="text-xs text-slate-500 hover:text-indigo-700 flex items-center gap-1 font-semibold transition-colors">
                 Full table <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -113,21 +113,21 @@ export function DashboardPage() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-blue-100 bg-blue-50">
-                    <th className="px-4 py-3 text-left text-xs font-display font-bold text-blue-500 uppercase tracking-wider">Crop</th>
-                    <th className="px-4 py-3 text-left text-xs font-display font-bold text-blue-500 uppercase tracking-wider">Market</th>
-                    <th className="px-4 py-3 text-right text-xs font-display font-bold text-blue-500 uppercase tracking-wider">GHS/kg</th>
+                    <th className="px-4 py-3 text-left text-xs font-display font-bold text-slate-500 uppercase tracking-wider">Crop</th>
+                    <th className="px-4 py-3 text-left text-xs font-display font-bold text-slate-500 uppercase tracking-wider">Market</th>
+                    <th className="px-4 py-3 text-right text-xs font-display font-bold text-slate-500 uppercase tracking-wider">GHS/kg</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><td colSpan={3} className="px-4 py-6 text-center text-blue-300 text-xs">Loading...</td></tr>
+                    <tr><td colSpan={3} className="px-4 py-6 text-center text-slate-300 text-xs">Loading...</td></tr>
                   ) : prices.length === 0 ? (
-                    <tr><td colSpan={3} className="px-4 py-6 text-center text-blue-300 text-xs">No market data yet</td></tr>
+                    <tr><td colSpan={3} className="px-4 py-6 text-center text-slate-300 text-xs">No market data yet</td></tr>
                   ) : prices.map((p, i) => (
                     <tr key={p.id} className={`${i !== prices.length - 1 ? 'border-b border-blue-50' : ''} hover:bg-blue-50/60 transition-colors`}>
-                      <td className="px-4 py-3 font-semibold text-blue-900 capitalize">{p.crop}</td>
-                      <td className="px-4 py-3 text-blue-500">{p.market}</td>
-                      <td className="px-4 py-3 text-right font-mono font-bold text-blue-600">{p.price_per_kg}</td>
+                      <td className="px-4 py-3 font-semibold text-indigo-950 capitalize">{p.crop}</td>
+                      <td className="px-4 py-3 text-slate-500">{p.market}</td>
+                      <td className="px-4 py-3 text-right font-mono font-bold text-indigo-600">{p.price_per_kg}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -142,7 +142,7 @@ export function DashboardPage() {
           <WeatherWidget location={user?.region ? `${user.region},GH` : 'Accra,GH'} />
 
           <div className="card">
-            <h3 className="font-display font-bold text-blue-900 text-sm mb-3">Quick Actions</h3>
+            <h3 className="font-display font-bold text-indigo-950 text-sm mb-3">Quick Actions</h3>
             <div className="space-y-1">
               {[
                 { to: '/predictions',   label: 'Run AI Prediction',    icon: '🤖' },
@@ -150,11 +150,11 @@ export function DashboardPage() {
                 { to: '/ai-assistant',  label: 'Ask AI Assistant',     icon: '💬' },
               ].map(({ to, label, icon }) => (
                 <Link key={to} to={to}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-blue-700 hover:text-blue-900 transition-all text-sm group font-medium"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-indigo-700 hover:text-indigo-950 transition-all text-sm group font-medium"
                 >
                   <span>{icon}</span>
                   <span className="flex-1">{label}</span>
-                  <ArrowRight className="w-3.5 h-3.5 text-blue-300 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
               ))}
             </div>

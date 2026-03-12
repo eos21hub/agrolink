@@ -62,8 +62,8 @@ export function UploadCropPage() {
         <div className="w-16 h-16 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center mb-4">
           <CheckCircle className="w-8 h-8 text-emerald-500" />
         </div>
-        <h2 className="font-display font-bold text-2xl text-blue-900 mb-2">Crop Listed!</h2>
-        <p className="text-blue-400 text-sm">Redirecting to dashboard...</p>
+        <h2 className="font-display font-bold text-2xl text-indigo-950 mb-2">Crop Listed!</h2>
+        <p className="text-slate-400 text-sm">Redirecting to dashboard...</p>
       </div>
     );
   }
@@ -72,7 +72,7 @@ export function UploadCropPage() {
     <div className="max-w-2xl animate-fade-in">
       <div className="mb-8">
         <h1 className="page-title mb-1">Upload Crop</h1>
-        <p className="text-blue-400 text-sm">List your crop for AI demand analysis and market matching</p>
+        <p className="text-slate-400 text-sm">List your crop for AI demand analysis and market matching</p>
       </div>
 
       <div className="card space-y-5">
@@ -98,8 +98,8 @@ export function UploadCropPage() {
                 onClick={() => setForm(prev => ({ ...prev, crop_name: crop }))}
                 className={`text-xs px-3 py-1 rounded-full border font-medium transition-all duration-150 ${
                   form.crop_name === crop
-                    ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                    : 'border-blue-200 text-blue-500 hover:border-blue-400 hover:text-blue-700 bg-white'
+                    ? 'bg-gradient-to-r from-indigo-500 to-blue-500 border-indigo-500 text-white shadow-sm'
+                    : 'border-blue-200 text-slate-500 hover:border-blue-400 hover:text-indigo-700 bg-white'
                 }`}
               >
                 {crop}
@@ -141,15 +141,15 @@ export function UploadCropPage() {
         {form.crop_name && form.quantity && form.expected_price && (
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
             <div className="flex items-center gap-2 mb-2">
-              <Wheat className="w-4 h-4 text-blue-500" />
-              <span className="text-xs font-display font-bold text-blue-600 uppercase tracking-wider">Listing Preview</span>
+              <Wheat className="w-4 h-4 text-slate-500" />
+              <span className="text-xs font-display font-bold text-indigo-600 uppercase tracking-wider">Listing Preview</span>
             </div>
-            <p className="text-sm text-blue-800 font-medium">
+            <p className="text-sm text-indigo-900 font-medium">
               <span className="capitalize">{form.crop_name}</span>
               {' '} — {form.quantity} kg at GHS {form.expected_price}/kg
               {form.location && ` · ${form.location}`}
             </p>
-            <p className="text-xs text-blue-400 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               Estimated value: GHS {(Number(form.quantity) * Number(form.expected_price)).toLocaleString()}
             </p>
           </div>

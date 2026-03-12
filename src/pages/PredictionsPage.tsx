@@ -43,7 +43,7 @@ export function PredictionsPage() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h1 className="page-title mb-1">AI Demand Predictions</h1>
-        <p className="text-blue-400 text-sm">Get AI-powered demand forecasts for any crop in Ghana's markets</p>
+        <p className="text-slate-400 text-sm">Get AI-powered demand forecasts for any crop in Ghana's markets</p>
       </div>
 
       {/* Prediction form */}
@@ -52,7 +52,7 @@ export function PredictionsPage() {
           <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
             <Sparkles className="w-4 h-4 text-amber-500" />
           </div>
-          <h2 className="font-display font-bold text-blue-900">Run New Prediction</h2>
+          <h2 className="font-display font-bold text-indigo-950">Run New Prediction</h2>
         </div>
 
         {error && (
@@ -86,8 +86,8 @@ export function PredictionsPage() {
               onClick={() => setCropInput(crop)}
               className={`text-xs px-3 py-1 rounded-full border font-medium transition-all duration-150 ${
                 cropInput === crop
-                  ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                  : 'border-blue-200 text-blue-500 hover:border-blue-400 hover:text-blue-700 bg-white'
+                  ? 'bg-gradient-to-r from-indigo-500 to-blue-500 border-indigo-500 text-white shadow-sm'
+                  : 'border-blue-200 text-slate-500 hover:border-blue-400 hover:text-indigo-700 bg-white'
               }`}
             >
               {crop}
@@ -99,8 +99,8 @@ export function PredictionsPage() {
           <div className="mt-4 flex items-center gap-3 p-4 rounded-xl bg-blue-50 border border-blue-100">
             <div className="spinner" />
             <div>
-              <p className="text-sm font-display font-bold text-blue-900">AI is analyzing market data...</p>
-              <p className="text-xs text-blue-400 mt-0.5">Evaluating demand trends for <span className="font-semibold">{cropInput}</span></p>
+              <p className="text-sm font-display font-bold text-indigo-950">AI is analyzing market data...</p>
+              <p className="text-xs text-slate-400 mt-0.5">Evaluating demand trends for <span className="font-semibold">{cropInput}</span></p>
             </div>
           </div>
         )}
@@ -108,7 +108,7 @@ export function PredictionsPage() {
 
       {/* Demand score guide */}
       <div className="card">
-        <h3 className="font-display font-bold text-blue-400 text-xs uppercase tracking-widest mb-3">Demand Score Guide</h3>
+        <h3 className="font-display font-bold text-slate-400 text-xs uppercase tracking-widest mb-3">Demand Score Guide</h3>
         <div className="flex gap-6">
           {[
             { range: '70–100', label: 'High Demand', color: 'text-emerald-600', dot: 'bg-emerald-400' },
@@ -118,7 +118,7 @@ export function PredictionsPage() {
             <div key={range} className="flex items-center gap-2">
               <div className={`w-2 h-2 rounded-full ${dot}`} />
               <span className={`text-xs font-mono font-bold ${color}`}>{range}</span>
-              <span className="text-xs text-blue-400">{label}</span>
+              <span className="text-xs text-slate-400">{label}</span>
             </div>
           ))}
         </div>
@@ -127,7 +127,7 @@ export function PredictionsPage() {
       {/* Past predictions */}
       <div>
         <div className="flex items-center gap-2 mb-4">
-          <BarChart3 className="w-4 h-4 text-blue-400" />
+          <BarChart3 className="w-4 h-4 text-slate-400" />
           <h2 className="section-title">Prediction History</h2>
           <span className="badge-soil">{predictions.length}</span>
         </div>
@@ -139,8 +139,8 @@ export function PredictionsPage() {
         ) : predictions.length === 0 ? (
           <div className="card text-center py-12 border-dashed">
             <BarChart3 className="w-8 h-8 text-blue-200 mx-auto mb-2" />
-            <p className="text-blue-400 text-sm">No predictions yet</p>
-            <p className="text-blue-300 text-xs mt-1">Enter a crop name above to get started</p>
+            <p className="text-slate-400 text-sm">No predictions yet</p>
+            <p className="text-slate-300 text-xs mt-1">Enter a crop name above to get started</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">

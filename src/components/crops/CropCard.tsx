@@ -19,15 +19,15 @@ export function CropCard({ crop, onDelete }: CropCardProps) {
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center">
-            <Wheat className="w-4 h-4 text-blue-600" />
+            <Wheat className="w-4 h-4 text-indigo-600" />
           </div>
           <div>
-            <h3 className="font-display font-semibold text-blue-900 text-sm capitalize">{crop.crop_name}</h3>
+            <h3 className="font-display font-semibold text-indigo-950 text-sm capitalize">{crop.crop_name}</h3>
             <span className={STATUS_STYLES[crop.status]}>{crop.status}</span>
           </div>
         </div>
         <div className="text-right">
-          <div className="font-mono font-bold text-blue-600 text-sm">GHS {crop.expected_price}/kg</div>
+          <div className="font-mono font-bold text-indigo-600 text-sm">GHS {crop.expected_price}/kg</div>
         </div>
       </div>
 
@@ -38,11 +38,11 @@ export function CropCard({ crop, onDelete }: CropCardProps) {
           { icon: Calendar, label: 'Harvest',  value: format(new Date(crop.harvest_date), 'MMM d, yy') },
         ].map(({ icon: Icon, label, value }) => (
           <div key={label} className="flex flex-col gap-0.5">
-            <div className="flex items-center gap-1 text-blue-400">
+            <div className="flex items-center gap-1 text-slate-400">
               <Icon className="w-3 h-3" />
               <span className="text-xs">{label}</span>
             </div>
-            <span className="text-xs font-mono font-semibold text-blue-800 truncate">{value}</span>
+            <span className="text-xs font-mono font-semibold text-indigo-900 truncate">{value}</span>
           </div>
         ))}
       </div>
