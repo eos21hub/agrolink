@@ -72,28 +72,27 @@ export function AIAssistantPage() {
     <div className="flex flex-col h-[calc(100vh-120px)] lg:h-[calc(100vh-64px)] max-w-3xl animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-3 mb-4 flex-shrink-0">
-        <div className="w-9 h-9 rounded-xl bg-forest-900/40 border border-forest-700/20 flex items-center justify-center">
-          <Bot className="w-5 h-5 text-forest-400" />
+        <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_2px_8px_rgba(37,99,235,0.30)]">
+          <Bot className="w-5 h-5 text-white" />
         </div>
         <div>
-          <h1 className="font-display font-bold text-xl text-earth-100">AI Farming Assistant</h1>
+          <h1 className="font-display font-bold text-xl text-blue-900">AI Farming Assistant</h1>
           <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-forest-400 animate-pulse" />
-            <span className="text-xs text-forest-500">Online — Powered by GPT-4</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs text-blue-400 font-medium">Online — Powered by GPT-4</span>
           </div>
         </div>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 pr-2 mb-4">
-        {/* Suggested questions (only at start) */}
         {messages.length === 1 && (
           <div className="flex flex-wrap gap-2 mb-2">
             {SUGGESTED_QUESTIONS.map(q => (
               <button
                 key={q}
                 onClick={() => sendMessage(q)}
-                className="text-xs px-3 py-1.5 rounded-full border border-forest-800/30 text-earth-500 hover:text-earth-200 hover:border-forest-600/40 hover:bg-forest-900/20 transition-all"
+                className="text-xs px-3 py-1.5 rounded-full border border-blue-200 text-blue-500 hover:text-blue-700 hover:border-blue-400 hover:bg-blue-50 transition-all font-medium bg-white"
               >
                 {q}
               </button>
@@ -107,27 +106,25 @@ export function AIAssistantPage() {
             className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'} animate-fade-in`}
           >
             <div className={`w-7 h-7 rounded-lg flex-shrink-0 flex items-center justify-center ${
-              msg.role === 'assistant'
-                ? 'bg-forest-900/40 border border-forest-700/20'
-                : 'bg-earth-800/40 border border-earth-700/20'
+              msg.role === 'assistant' ? 'bg-blue-600' : 'bg-blue-100 border border-blue-200'
             }`}>
               {msg.role === 'assistant'
-                ? <Sparkles className="w-3.5 h-3.5 text-forest-400" />
-                : <User className="w-3.5 h-3.5 text-earth-400" />
+                ? <Sparkles className="w-3.5 h-3.5 text-white" />
+                : <User className="w-3.5 h-3.5 text-blue-500" />
               }
             </div>
 
-            <div className={`max-w-[80%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col`}>
-              <div className={`rounded-xl px-4 py-3 text-sm leading-relaxed ${
+            <div className={`max-w-[80%] flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+              <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 msg.role === 'assistant'
-                  ? 'bg-night-850/80 border border-forest-900/20 text-earth-200'
-                  : 'bg-forest-800/30 border border-forest-700/20 text-earth-100'
+                  ? 'bg-white border border-blue-100 text-blue-900 shadow-sm'
+                  : 'bg-blue-600 text-white'
               }`}>
                 {msg.content.split('\n').map((line, i) => (
                   <span key={i}>{line}{i < msg.content.split('\n').length - 1 && <br />}</span>
                 ))}
               </div>
-              <span className="text-xs text-earth-700 mt-1 px-1">
+              <span className="text-xs text-blue-300 mt-1 px-1">
                 {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             </div>
@@ -136,13 +133,13 @@ export function AIAssistantPage() {
 
         {loading && (
           <div className="flex gap-3 animate-fade-in">
-            <div className="w-7 h-7 rounded-lg bg-forest-900/40 border border-forest-700/20 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-3.5 h-3.5 text-forest-400" />
+            <div className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="w-3.5 h-3.5 text-white" />
             </div>
-            <div className="bg-night-850/80 border border-forest-900/20 rounded-xl px-4 py-3">
+            <div className="bg-white border border-blue-100 rounded-2xl px-4 py-3 shadow-sm">
               <div className="flex gap-1.5 items-center h-4">
                 {[0, 1, 2].map(i => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-forest-600 animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
+                  <div key={i} className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
                 ))}
               </div>
             </div>
@@ -166,7 +163,7 @@ export function AIAssistantPage() {
         <button
           onClick={() => sendMessage(input)}
           disabled={loading || !input.trim()}
-          className="btn-primary flex items-center gap-2 px-4"
+          className="btn-primary px-4"
         >
           <Send className="w-4 h-4" />
         </button>

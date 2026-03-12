@@ -25,11 +25,7 @@ export function UploadCropPage() {
   const [error, setError] = useState('');
 
   const [form, setForm] = useState({
-    crop_name: '',
-    quantity: '',
-    location: '',
-    harvest_date: '',
-    expected_price: '',
+    crop_name: '', quantity: '', location: '', harvest_date: '', expected_price: '',
   });
 
   const update = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
@@ -38,12 +34,10 @@ export function UploadCropPage() {
   const handleSubmit = async () => {
     if (!user) return;
     setError('');
-
     if (!form.crop_name || !form.quantity || !form.location || !form.harvest_date || !form.expected_price) {
       setError('Please fill in all fields');
       return;
     }
-
     setLoading(true);
     try {
       await cropsService.createCrop(user.id, {
@@ -65,11 +59,11 @@ export function UploadCropPage() {
   if (success) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-forest-900/30 border border-forest-600/30 flex items-center justify-center mb-4">
-          <CheckCircle className="w-8 h-8 text-forest-400" />
+        <div className="w-16 h-16 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center mb-4">
+          <CheckCircle className="w-8 h-8 text-emerald-500" />
         </div>
-        <h2 className="font-display font-bold text-2xl text-earth-100 mb-2">Crop Listed!</h2>
-        <p className="text-earth-500 text-sm">Redirecting to dashboard...</p>
+        <h2 className="font-display font-bold text-2xl text-blue-900 mb-2">Crop Listed!</h2>
+        <p className="text-blue-400 text-sm">Redirecting to dashboard...</p>
       </div>
     );
   }
@@ -78,18 +72,17 @@ export function UploadCropPage() {
     <div className="max-w-2xl animate-fade-in">
       <div className="mb-8">
         <h1 className="page-title mb-1">Upload Crop</h1>
-        <p className="text-earth-500 text-sm">List your crop for AI demand analysis and market matching</p>
+        <p className="text-blue-400 text-sm">List your crop for AI demand analysis and market matching</p>
       </div>
 
       <div className="card space-y-5">
         {error && (
-          <div className="flex items-center gap-2 p-3 rounded-lg bg-red-900/20 border border-red-800/30 text-red-400 text-sm">
+          <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
         )}
 
-        {/* Crop name with quick select */}
         <div>
           <label className="label">Crop Name</label>
           <input
@@ -103,10 +96,10 @@ export function UploadCropPage() {
               <button
                 key={crop}
                 onClick={() => setForm(prev => ({ ...prev, crop_name: crop }))}
-                className={`text-xs px-2.5 py-1 rounded-full border transition-all duration-150 ${
+                className={`text-xs px-3 py-1 rounded-full border font-medium transition-all duration-150 ${
                   form.crop_name === crop
-                    ? 'bg-forest-700/30 border-forest-500/40 text-forest-300'
-                    : 'border-forest-900/30 text-earth-600 hover:text-earth-300 hover:border-forest-700/30'
+                    ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
+                    : 'border-blue-200 text-blue-500 hover:border-blue-400 hover:text-blue-700 bg-white'
                 }`}
               >
                 {crop}
@@ -118,36 +111,19 @@ export function UploadCropPage() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="label">Quantity (kg)</label>
-            <input
-              type="number"
-              className="input-field"
-              placeholder="500"
-              min="1"
-              value={form.quantity}
-              onChange={update('quantity')}
-            />
+            <input type="number" className="input-field" placeholder="500" min="1" value={form.quantity} onChange={update('quantity')} />
           </div>
           <div>
             <label className="label">Expected Price (GHS/kg)</label>
-            <input
-              type="number"
-              className="input-field"
-              placeholder="3.50"
-              step="0.01"
-              min="0"
-              value={form.expected_price}
-              onChange={update('expected_price')}
-            />
+            <input type="number" className="input-field" placeholder="3.50" step="0.01" min="0" value={form.expected_price} onChange={update('expected_price')} />
           </div>
         </div>
 
         <div>
           <label className="label">Farm Location / Nearest Market</label>
           <select className="input-field" value={form.location} onChange={update('location')}>
-            <option value="" className="bg-night-900">Select market...</option>
-            {GHANA_MARKETS.map(m => (
-              <option key={m} value={m} className="bg-night-900">{m}</option>
-            ))}
+            <option value="">Select market...</option>
+            {GHANA_MARKETS.map(m => <option key={m} value={m}>{m}</option>)}
           </select>
         </div>
 
@@ -162,37 +138,25 @@ export function UploadCropPage() {
           />
         </div>
 
-        {/* Preview */}
         {form.crop_name && form.quantity && form.expected_price && (
-          <div className="bg-forest-900/20 rounded-lg p-4 border border-forest-800/20">
+          <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
             <div className="flex items-center gap-2 mb-2">
-              <Wheat className="w-4 h-4 text-forest-400" />
-              <span className="text-xs font-display font-semibold text-earth-300 uppercase tracking-wider">Listing Preview</span>
+              <Wheat className="w-4 h-4 text-blue-500" />
+              <span className="text-xs font-display font-bold text-blue-600 uppercase tracking-wider">Listing Preview</span>
             </div>
-            <p className="text-sm text-earth-300">
-              <span className="font-semibold text-earth-100 capitalize">{form.crop_name}</span>
+            <p className="text-sm text-blue-800 font-medium">
+              <span className="capitalize">{form.crop_name}</span>
               {' '} — {form.quantity} kg at GHS {form.expected_price}/kg
               {form.location && ` · ${form.location}`}
             </p>
-            <p className="text-xs text-earth-600 mt-1">
+            <p className="text-xs text-blue-400 mt-1">
               Estimated value: GHS {(Number(form.quantity) * Number(form.expected_price)).toLocaleString()}
             </p>
           </div>
         )}
 
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="btn-primary w-full flex items-center justify-center gap-2 py-3"
-        >
-          {loading ? (
-            <><div className="spinner" /> Uploading...</>
-          ) : (
-            <>
-              <Wheat className="w-4 h-4" />
-              List Crop
-            </>
-          )}
+        <button onClick={handleSubmit} disabled={loading} className="btn-primary w-full py-3 text-base">
+          {loading ? <><div className="spinner" /> Uploading...</> : <><Wheat className="w-4 h-4" /> List Crop</>}
         </button>
       </div>
     </div>
