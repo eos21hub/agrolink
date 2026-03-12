@@ -53,11 +53,12 @@ export function AIAssistantPage() {
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, assistantMsg]);
-    } catch {
+    } catch (err: unknown) {
+      const detail = err instanceof Error ? err.message : String(err);
       const errorMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Sorry, I had trouble processing that. Please check your API key and try again.',
+        content: `Error: ${detail}`,
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMsg]);

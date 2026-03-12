@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 import { authService } from '@/services/authService';
 import type { User } from '@/types';
@@ -16,23 +16,13 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    // 1. Get current session synchronously first so ProtectedRoute
-    //    doesn't flash redirect to /login on page reload
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session?.user) {
-        setLoading(false);
-        return;
-      }
-      // Set a minimal user immediately so routing unblocks
-      authService.getCurrentUser().then(profile => {
-        setUser(profile);
-        setLoading(false);
-      });
-    });
+    // Guard against double-mount in dev
+    if (initialized.current) return;
+    initialized.current = true;
 
-    // 2. Subscribe to future auth changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_OUT' || !session?.user) {
@@ -40,20 +30,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLoading(false);
           return;
         }
-        // For SIGNED_IN / TOKEN_REFRESHED — fetch full profile
         const profile = await authService.getCurrentUser();
         setUser(profile);
         setLoading(false);
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      initialized.current = false;
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    // Eagerly set user from session so navigate('/dashboard') works immediately
     if (data.user) {
       const profile = await authService.getCurrentUser();
       setUser(profile);
@@ -62,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signUp = async (data: Parameters<typeof authService.signUp>[0]) => {
     const result = await authService.signUp(data);
-    // After sign-up the session may already be active (email confirm disabled)
     if (result.user) {
       const profile = await authService.getCurrentUser();
       setUser(profile);
