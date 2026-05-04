@@ -6,7 +6,7 @@
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {
-    "VITE_SUPABASE_URL": "@supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key"
+    "VITE_SUPABASE_URL": "https://awqzntjttsnonzqcazcc.supabase.co",
+    "VITE_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3cXpudGp0dHNub256cWNhemNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3OTUxMjQsImV4cCI6MjA4ODM3MTEyNH0.aMbPrby9__Zir4_uYjrB4WDCltxbX9Zp-Hw3vlumZ0Q"
   }
 }

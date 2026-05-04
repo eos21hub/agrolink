@@ -9,7 +9,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
-    lock: async (name, acquireTimeout, fn) => {
+    lock: async (_name, _acquireTimeout, fn) => {
       // Use a simple mutex instead of Web Locks API to avoid AbortError
       return fn();
     },
