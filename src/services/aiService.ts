@@ -1,5 +1,10 @@
 import type { AIResponse, ChatMessage } from '@/types';
 import { supabase, TABLES } from '@/lib/supabase';
+import { cache } from '@/lib/cache';
+
+const TTL_PREDICTIONS = 30 * 1000;        // 30s — invalidated on new prediction
+const TTL_CROP_RESULT = 60 * 60 * 1000;  // 1h — mock results never change
+const TTL_CHAT        = 5 * 60 * 1000;   // 5 min per unique message
 
 const MOCK_PREDICTIONS: Record<string, AIResponse> = {
   maize:       { demand_score: 82, predicted_price: 3.20, best_market: 'Techiman Market',         reasoning: 'Maize demand is high heading into the dry season. Techiman remains the largest commodity hub in Ghana with strong buyer activity from food processors and northern traders.' },
@@ -78,10 +83,15 @@ function getMockChatResponse(message: string): string {
 
 export const aiService = {
   async predictDemand(userId: string, cropName: string): Promise<AIResponse> {
-    await new Promise(r => setTimeout(r, 1800));
+    const cropKey = cropName.toLowerCase().trim();
+    const resultCacheKey = `ai:crop:${cropKey}`;
 
-    const key = cropName.toLowerCase().trim();
-    const result = MOCK_PREDICTIONS[key] ?? getDefaultPrediction(cropName);
+    let result = cache.get<AIResponse>(resultCacheKey);
+    if (!result) {
+      await new Promise(r => setTimeout(r, 1000));
+      result = MOCK_PREDICTIONS[cropKey] ?? getDefaultPrediction(cropName);
+      cache.set(resultCacheKey, result, TTL_CROP_RESULT);
+    }
 
     await supabase.from(TABLES.PREDICTIONS).insert({
       user_id: userId,
@@ -92,10 +102,15 @@ export const aiService = {
       reasoning: result.reasoning,
     });
 
+    cache.invalidate(`ai:predictions:${userId}`);
     return result;
   },
 
   async getUserPredictions(userId: string) {
+    const key = `ai:predictions:${userId}`;
+    const cached = cache.get<unknown[]>(key);
+    if (cached) return cached;
+
     const { data, error } = await supabase
       .from(TABLES.PREDICTIONS)
       .select('*')
@@ -103,11 +118,18 @@ export const aiService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
+    cache.set(key, data, TTL_PREDICTIONS);
     return data;
   },
 
   async chat(_history: ChatMessage[], userMessage: string): Promise<string> {
-    await new Promise(r => setTimeout(r, 1000 + Math.random() * 800));
-    return getMockChatResponse(userMessage);
+    const key = `ai:chat:${userMessage.toLowerCase().trim()}`;
+    const cached = cache.get<string>(key);
+    if (cached) return cached;
+
+    await new Promise(r => setTimeout(r, 700 + Math.random() * 400));
+    const response = getMockChatResponse(userMessage);
+    cache.set(key, response, TTL_CHAT);
+    return response;
   },
 };

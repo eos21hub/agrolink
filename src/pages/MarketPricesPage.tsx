@@ -12,9 +12,9 @@ export function MarketPricesPage() {
   const [sortField, setSortField] = useState<keyof MarketPrice>('updated_at');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
 
-  const load = () => {
+  const load = (forceRefresh = false) => {
     setLoading(true);
-    marketService.getAllPrices()
+    marketService.getAllPrices(forceRefresh)
       .then(data => { setPrices(data); setFiltered(data); })
       .finally(() => setLoading(false));
   };
@@ -50,7 +50,7 @@ export function MarketPricesPage() {
           <h1 className="page-title mb-1">Market Prices</h1>
           <p className="text-slate-400 text-sm">Live crop prices across Ghana's markets</p>
         </div>
-        <button onClick={load} className="btn-secondary flex items-center gap-2">
+        <button onClick={() => load(true)} className="btn-secondary flex items-center gap-2">
           <RefreshCw className="w-3.5 h-3.5" />
           Refresh
         </button>

@@ -1,4 +1,9 @@
 import type { WeatherData, WeatherAlert, WeatherForecastDay, HourlyForecast } from '@/types';
+import { cache } from '@/lib/cache';
+
+const TTL_WEATHER  = 10 * 60 * 1000; // 10 min
+const TTL_FORECAST = 30 * 60 * 1000; // 30 min
+const TTL_HOURLY   = 60 * 60 * 1000; // 60 min
 
 // ── Region base data ──────────────────────────────────────────────────────────
 
@@ -199,7 +204,11 @@ function forecastFarmingNote(description: string, high: number): string {
 
 export const weatherService = {
   async getWeather(location = 'Accra,GH'): Promise<WeatherData> {
-    await new Promise(r => setTimeout(r, 600));
+    const cacheKey = `weather:${location}`;
+    const cached = cache.get<WeatherData>(cacheKey);
+    if (cached) return cached;
+
+    await new Promise(r => setTimeout(r, 400));
 
     const key    = getRegionKey(location);
     const base   = REGIONS[key];
@@ -220,7 +229,7 @@ export const weatherService = {
     const clouds    = clamp(Math.round(jitter(base.cloud_coverage, 5)), 0, 100);
     const { sunrise, sunset } = getSunTimes(base.lat, month);
 
-    return {
+    const result: WeatherData = {
       temperature: temp,
       feels_like: feelsLike,
       humidity,
@@ -240,10 +249,17 @@ export const weatherService = {
       sunset,
       alerts: buildAlerts(temp, humidity, wind, rainProb, season, base.description),
     };
+
+    cache.set(cacheKey, result, TTL_WEATHER);
+    return result;
   },
 
   async getForecast(location = 'Accra,GH', days = 7): Promise<WeatherForecastDay[]> {
-    await new Promise(r => setTimeout(r, 800));
+    const cacheKey = `forecast:${location}:${days}`;
+    const cached = cache.get<WeatherForecastDay[]>(cacheKey);
+    if (cached) return cached;
+
+    await new Promise(r => setTimeout(r, 500));
 
     const key   = getRegionKey(location);
     const base  = REGIONS[key];
@@ -251,7 +267,7 @@ export const weatherService = {
     const month = now.getMonth();
     const delta = getSeasonalDelta(month, base.lat > 8);
 
-    return Array.from({ length: days }, (_, i) => {
+    const result = Array.from({ length: days }, (_, i) => {
       const date    = new Date(now);
       date.setDate(date.getDate() + i + 1);
       const condition = pickCondition(base.rainfall_probability + delta.rainProbDelta);
@@ -273,10 +289,17 @@ export const weatherService = {
         farming_note:         forecastFarmingNote(condition.description, high),
       };
     });
+
+    cache.set(cacheKey, result, TTL_FORECAST);
+    return result;
   },
 
   async getHourlyForecast(location = 'Accra,GH'): Promise<HourlyForecast[]> {
-    await new Promise(r => setTimeout(r, 500));
+    const cacheKey = `hourly:${location}`;
+    const cached = cache.get<HourlyForecast[]>(cacheKey);
+    if (cached) return cached;
+
+    await new Promise(r => setTimeout(r, 300));
 
     const key   = getRegionKey(location);
     const base  = REGIONS[key];
@@ -289,7 +312,7 @@ export const weatherService = {
     const now = new Date();
     const startHour = now.getHours() + 1;
 
-    return Array.from({ length: 24 }, (_, i) => {
+    const result = Array.from({ length: 24 }, (_, i) => {
       const hour = (startHour + i) % 24;
       const timeStr = `${hour.toString().padStart(2, '0')}:00`;
 
@@ -313,5 +336,8 @@ export const weatherService = {
         wind_speed:           clamp(Math.round(jitter(base.wind_speed, 1.5) * 10) / 10, 0, 25),
       };
     });
+
+    cache.set(cacheKey, result, TTL_HOURLY);
+    return result;
   },
 };
