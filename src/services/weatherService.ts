@@ -1,69 +1,56 @@
 import type { WeatherData } from '@/types';
 
-const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY as string;
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const MOCK_WEATHER_BY_REGION: Record<string, Partial<WeatherData>> = {
+  'greater accra': { temperature: 32, feels_like: 35, humidity: 78, description: 'partly cloudy', rainfall_probability: 20, wind_speed: 4, icon: '02d' },
+  'ashanti':       { temperature: 28, feels_like: 30, humidity: 85, description: 'light rain', rainfall_probability: 65, wind_speed: 3, icon: '10d' },
+  'western':       { temperature: 27, feels_like: 29, humidity: 88, description: 'moderate rain', rainfall_probability: 80, wind_speed: 5, icon: '10d' },
+  'eastern':       { temperature: 29, feels_like: 31, humidity: 80, description: 'scattered clouds', rainfall_probability: 35, wind_speed: 3, icon: '03d' },
+  'central':       { temperature: 30, feels_like: 33, humidity: 82, description: 'clear sky', rainfall_probability: 10, wind_speed: 6, icon: '01d' },
+  'volta':         { temperature: 31, feels_like: 34, humidity: 75, description: 'few clouds', rainfall_probability: 15, wind_speed: 4, icon: '02d' },
+  'northern':      { temperature: 36, feels_like: 39, humidity: 45, description: 'clear sky', rainfall_probability: 5,  wind_speed: 7, icon: '01d' },
+  'upper east':    { temperature: 38, feels_like: 41, humidity: 38, description: 'sunny', rainfall_probability: 3,  wind_speed: 8, icon: '01d' },
+  'upper west':    { temperature: 37, feels_like: 40, humidity: 40, description: 'haze', rainfall_probability: 8,  wind_speed: 6, icon: '50d' },
+  'brong-ahafo':   { temperature: 30, feels_like: 32, humidity: 76, description: 'overcast clouds', rainfall_probability: 40, wind_speed: 3, icon: '04d' },
+};
 
 function getFarmingAdvice(temp: number, humidity: number, description: string): string {
   const desc = description.toLowerCase();
+  if (desc.includes('rain'))                return 'Good conditions for watering. Hold off on pesticide applications. Check for soil waterlogging.';
+  if (temp > 35)                            return 'Very hot — irrigate early morning or evening. Shade sensitive seedlings. Avoid transplanting today.';
+  if (temp > 28 && humidity > 70)           return 'Hot and humid — watch for fungal diseases. Ensure good airflow between crops.';
+  if (desc.includes('clear') || temp > 30) return 'Excellent day for fieldwork, harvesting, and drying crops. Apply treatments if needed.';
+  return 'Moderate conditions — ideal for planting, weeding, and general farm activities.';
+}
 
-  if (desc.includes('rain') || desc.includes('drizzle')) {
-    return 'Good conditions for watering. Hold off on pesticide applications. Check for soil waterlogging.';
+function getLocationKey(location: string): string {
+  const l = location.toLowerCase();
+  for (const key of Object.keys(MOCK_WEATHER_BY_REGION)) {
+    if (l.includes(key)) return key;
   }
-  if (temp > 35) {
-    return 'Very hot conditions — irrigate early morning or evening. Shade sensitive seedlings. Avoid transplanting.';
-  }
-  if (temp > 28 && humidity > 70) {
-    return 'Hot and humid — watch for fungal diseases. Ensure good airflow between crops.';
-  }
-  if (temp < 18) {
-    return 'Cool conditions — good for leafy vegetables. Protect tropical crops from cold stress.';
-  }
-  if (desc.includes('clear') || desc.includes('sunny')) {
-    return 'Excellent day for fieldwork, harvesting, and drying crops. Apply treatments if needed.';
-  }
-  return 'Moderate conditions — ideal for general farm activities including planting and weeding.';
+  return 'greater accra';
 }
 
 export const weatherService = {
   async getWeather(location = 'Accra,GH'): Promise<WeatherData> {
-    const url = `${BASE_URL}/weather?q=${encodeURIComponent(location)}&appid=${WEATHER_API_KEY}&units=metric`;
+    await new Promise(r => setTimeout(r, 600));
 
-    const response = await fetch(url);
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.message || 'Weather data unavailable');
-    }
-
-    const data = await response.json();
-
-    // Get rainfall probability from forecast endpoint
-    let rainfallProbability = 0;
-    try {
-      const forecastUrl = `${BASE_URL}/forecast?q=${encodeURIComponent(location)}&appid=${WEATHER_API_KEY}&units=metric&cnt=8`;
-      const forecastRes = await fetch(forecastUrl);
-      if (forecastRes.ok) {
-        const forecastData = await forecastRes.json();
-        const maxPop = Math.max(...forecastData.list.slice(0, 4).map((f: { pop?: number }) => f.pop || 0));
-        rainfallProbability = Math.round(maxPop * 100);
-      }
-    } catch {
-      // Silently fail, rainfall stays 0
-    }
-
-    const temp = Math.round(data.main.temp);
-    const humidity = data.main.humidity;
-    const description = data.weather[0]?.description || 'clear sky';
+    const key = getLocationKey(location);
+    const mock = MOCK_WEATHER_BY_REGION[key];
+    const temp = mock.temperature!;
+    const humidity = mock.humidity!;
+    const description = mock.description!;
+    const jitter = (n: number, range = 2) => Math.round(n + (Math.random() * range * 2 - range));
 
     return {
-      temperature: temp,
-      feels_like: Math.round(data.main.feels_like),
-      humidity,
+      temperature: jitter(temp),
+      feels_like: jitter(mock.feels_like!),
+      humidity: jitter(humidity, 3),
       description,
-      rainfall_probability: rainfallProbability,
-      wind_speed: Math.round(data.wind?.speed || 0),
-      location: `${data.name}, ${data.sys?.country || 'GH'}`,
+      rainfall_probability: mock.rainfall_probability!,
+      wind_speed: jitter(mock.wind_speed!, 1),
+      location: location.includes(',') ? location.replace(',GH', ', Ghana') : `${location}, Ghana`,
       farming_advice: getFarmingAdvice(temp, humidity, description),
-      icon: data.weather[0]?.icon || '01d',
+      icon: mock.icon!,
     };
   },
 };
